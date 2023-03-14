@@ -4,7 +4,6 @@
 #include <time.h>
 #include <stdbool.h>
 #include "raylib.h"
-
 #include "zaitypes.h"
 
 
@@ -249,7 +248,7 @@ int main(void) {
 
         switch(score_board.gamestate) {
             case PLAYER1_WON:
-                 
+                  
                 CloseWindow();
                 break;
             case PLAYER2_WON:
