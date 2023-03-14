@@ -13,6 +13,7 @@
 #define PADDLE_WIDTH          10
 #define PADDLE_HEIGHT        100
 #define PADDLE_Y                  (HEIGHT / 2 - 50)
+#define FINAL_SCORE 5
 
 typedef enum {
     PADDLE_LEFT,
@@ -22,7 +23,7 @@ typedef enum {
 typedef enum {
     PLAYER1_WON,
     PLAYER2_WON,
-    STARTING
+    PLAYING
 } GameState;
 
 typedef struct  {
@@ -184,7 +185,7 @@ int main(void) {
 
     };
 
-    ScoreBoard score_board = {0,0,false,false, STARTING};
+    ScoreBoard score_board = {0,0,false,false, PLAYING};
 
     // Randomize x and y ball direction
     #if 1
@@ -222,10 +223,6 @@ int main(void) {
         // Draw
         BeginDrawing();
         ClearBackground(BLACK);
-    
-        DrawRectangle(paddles[0].rect.x, paddles[0].rect.y, paddles[0].rect.width, paddles[0].rect.height, paddles[0].color);
-        DrawRectangle(paddles[1].rect.x, paddles[1].rect.y, paddles[1].rect.width, paddles[1].rect.height, paddles[1].color);
-        DrawCircle(ball.position.x, ball.position.y, ball.radius, ball.color);
 
         if(score_board.player_1_scored)
         {
@@ -243,23 +240,21 @@ int main(void) {
         snprintf(ui_buffer, sizeof(ui_buffer), "%d|%d", score_board.player_1_score, score_board.player_2_score);
         DrawText(ui_buffer,  WIDTH /2 - 50,0, 50, WHITE);
 
-        if(score_board.player_1_score == 5) score_board.gamestate = PLAYER1_WON; 
-        if(score_board.player_2_score == 5) score_board.gamestate = PLAYER2_WON; 
+        if(score_board.player_1_score == FINAL_SCORE) score_board.gamestate = PLAYER1_WON; 
+        if(score_board.player_2_score == FINAL_SCORE) score_board.gamestate = PLAYER2_WON; 
 
-        switch(score_board.gamestate) {
-            case PLAYER1_WON:
-                  
-                CloseWindow();
-                break;
-            case PLAYER2_WON:
-                CloseWindow();
-                break;
-            case STARTING:
-                break;
+        if(score_board.gamestate == PLAYING) {
+            DrawRectangle(paddles[0].rect.x, paddles[0].rect.y, paddles[0].rect.width, paddles[0].rect.height, paddles[0].color);
+            DrawRectangle(paddles[1].rect.x, paddles[1].rect.y, paddles[1].rect.width, paddles[1].rect.height, paddles[1].color);
+            DrawCircle(ball.position.x, ball.position.y, ball.radius, ball.color);
+        } else if(score_board.gamestate == PLAYER1_WON) {
+            DrawText("PLAYER 1 WON", WIDTH /2 - 200, WIDTH / 2, 50, WHITE);
+        } else if(score_board.gamestate == PLAYER2_WON) {
+            DrawText("PLAYER 2 WON", WIDTH /2 -200, WIDTH / 2, 50, WHITE);
         }
 
-
         EndDrawing();
+
     }
 
     CloseWindow();        // Close window and OpenGL context
@@ -269,3 +264,5 @@ int main(void) {
 
 
 }
+
+
