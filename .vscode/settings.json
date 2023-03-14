@@ -8,7 +8,7 @@
 		"**/*.o": true,
 		"**/*.exe": true,
 	},
-	"C_Cpp.errorSquiggles": "disabled",
+	"C_Cpp.errorSquiggles": "enabled",
 	"files.associations": {
 		"stdio.h": "c"
 	}
